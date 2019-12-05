@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const db = require("./data/db.js");
 
@@ -26,9 +27,10 @@ server.post("/api/users", (req, res) => {
 });
 
 server.get("/api/users", (req, res) => {
+  const message = process.env.MSG || "Hello World!";
   db.find()
     .then(users => {
-      res.status(200).json(users);
+      res.status(200).json({message, users});
     })
     .catch(err => {
       console.log("error on GET /api/users", err);
@@ -119,5 +121,5 @@ server.put("/api/users/:id", (req, res) => {
     });
 });
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 server.listen(port, () => console.log(`\n ** API running on ${port} ** \n`));
